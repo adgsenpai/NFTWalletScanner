@@ -66,7 +66,7 @@ def viewnfts(walletaddress):
                 try:
                   payload += '<tr>' +'<td>'+str(row['tokenID']) +'</td>'+ '<td>'+str(row['ContractAddress']) +'</td>'+ '<td>'+'<video autoplay loop muted style="width:310px" controls="controls" src="{0}">'.format(str(row['NFTImageLink']['video']))+'</video>'+'</td>'+ '</tr>'
                 except:
-                  payload += '<tr>' +'<td>'+str(row['tokenID']) +'</td>'+ '<td>'+str(row['ContractAddress']) +'</td>'+'<td>'+'No NFT Found'+'</td>'+ '</tr>'
+                  payload += '<tr>' +'<td>'+str(row['tokenID']) +'</td>'+ '<td>'+str(row['ContractAddress']) +'</td>'+'<td>'+'No NFT Render Data Found'+'</td>'+ '</tr>'
           
           return render_template('viewnft.html', blockchainaddress=walletaddress,payload=payload)     
 
