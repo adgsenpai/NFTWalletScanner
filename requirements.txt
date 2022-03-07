@@ -10,3 +10,4 @@ web3
 flask-cors
 cloudscraper
 bs4
+lxml
