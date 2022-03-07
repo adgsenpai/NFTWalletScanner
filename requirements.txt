@@ -1,1 +1,9 @@
-Flask
+flask
+graphene<3
+flask_graphql
+pandas
+pymongo
+Pillow 
+requests
+web3
+flask-cors
