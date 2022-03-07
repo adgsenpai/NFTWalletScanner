@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="../static/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../static/img/cryptowallet.webp">
+    <title>
+        ADG NFT Wallet Fetcher - View NFT
+    </title>
+    <!-- Style -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
+        rel="stylesheet" />
+    <link href="../static/css/fresh-bootstrap-table.css" rel="stylesheet" />
+
+    <!-- Fonts and icons -->
+    <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,300" rel="stylesheet" type="text/css">
+
+<body>
+  
+    <div class="container">
+       
+        <h1 style="font-family: 'Product Sans'; font-size: 50px;color: black;"> <img class="img-fluid" src="../static/img/cryptowallet.webp" style="width: 160px;"> ADG NFT Wallet Fetcher</h1>
+        <h1 style="font-family: 'Product Sans'; font-size: 25px;color: black;">showing NFTs for blockchain address <h1 style="font-family: 'Product Sans'; font-size: 25px;color: blue;">{{blockchainaddress}}</h1></h1>
+        <div class="card">
+        <div class="fresh-table toolbar-color-blue">
+            <div class="toolbar">
+
+            </div>
+
+            <table id="fresh-table" class="table">
+                <thead>
+                    <th data-field="tokenid">TokenID</th>
+                    <th data-field="contractAddress">contractAddress</th>
+                    <th data-field="NFT">NFT</th>
+                </thead>
+                <tbody>
+                    {{payload|safe}}
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+
+    <footer class="page-footer font-small special-color-dark pt-4">
+
+        <div style="
+        font-family: 'Product Sans';
+        font-size: 20px;
+        color: black;" class="footer-copyright text-center py-3">
+            a web 3.0 app made with ❤️ by
+            <a style="color:blue" href="https://adgstudios.co.za/"> ADGSTUDIOS</a>
+        </div>
+
+
+    </footer>
+</body>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/html5media/1.1.8/html5media.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/plyr/3.6.8/plyr.min.js'></script>
+
+ 
+
+
+<script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+</script>
+
+<script async defer src="https://buttons.github.io/buttons.js "></script>
+<script src="./static/js/soft-ui-dashboard.min.js?v=1.0.3 "></script>
+<!-- Javascript -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table/dist/bootstrap-table.min.js"></script>
+
+
+
+<script type="text/javascript">
+ 
+
+    var $table = $('#fresh-table')
+    var $alertBtn = $('#alertBtn')
+
+    window.operateEvents = {
+        'click .like': function (e, value, row, index) {
+            alert('You click like icon, row: ' + JSON.stringify(row))
+            console.log(value, row, index)
+        },
+        'click .edit': function (e, value, row, index) {
+            alert('You click edit icon, row: ' + JSON.stringify(row))
+            console.log(value, row, index)
+        },
+        'click .remove': function (e, value, row, index) {
+            $table.bootstrapTable('remove', {
+                field: 'id',
+                values: [row.id]
+            })
+        }
+    }
+
+    function operateFormatter(value, row, index) {
+        return [
+            '<a rel="tooltip" title="Like" class="table-action like" href="javascript:void(0)" title="Like">',
+            '<i class="fa fa-heart"></i>',
+            '</a>',
+            '<a rel="tooltip" title="Edit" class="table-action edit" href="javascript:void(0)" title="Edit">',
+            '<i class="fa fa-edit"></i>',
+            '</a>',
+            '<a rel="tooltip" title="Remove" class="table-action remove" href="javascript:void(0)" title="Remove">',
+            '<i class="fa fa-remove"></i>',
+            '</a>'
+        ].join('')
+    }
+
+    $(function () {
+        $table.bootstrapTable({
+            classes: 'table table-hover table-striped',
+            toolbar: '.toolbar',
+
+            search: true,
+            showRefresh: true,
+            showToggle: true,
+            showColumns: true,
+            pagination: true,
+            striped: true,
+            sortable: true,
+            pageSize: 8,
+            pageList: [8, 10, 25, 50, 100],
+
+            formatShowingRows: function (pageFrom, pageTo, totalRows) {
+                return ''
+            },
+            formatRecordsPerPage: function (pageNumber) {
+                return pageNumber + ' rows visible'
+            }
+        })
+
+        $alertBtn.click(function () {
+            alert('You pressed on Alert')
+        })
+    })
+
+</script>
+
+</body>
+
+</html>

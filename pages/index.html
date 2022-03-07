@@ -5,9 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="./static/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="./static/img/favicon.svg">
+    <link rel="icon" type="image/png" href="./static/img/cryptowallet.webp">
     <title>
-        ADGSDK
+        ADG NFT Wallet Fetcher
     </title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
@@ -30,32 +30,90 @@
 
                 </a>
             </div>
-
+            <img class="img-fluid" src="./static/img/cryptowallet.webp" style="
+                width: 160px;
+            ">
             <div class="card-body pt-2">
-                <span class="text-gradient text-primary text-uppercase text-xs font-weight-bold my-2">ADGSDK</span>
-                <a href="javascript:;" class="card-title h5 d-block text-darker">
-                Hello World!
-              </a>
+                <h1 style="
+                    font-family: 'Product Sans';
+                    font-size: 50px;
+                    color: black;
+                ">ADG NFT Wallet Fetcher</h1>
                 <br>
-                <p class="card-description mb-4">
-                    Click the link below to view the HTML docs.
-                </p>
-                <a href="https://www.creative-tim.com/learning-lab/bootstrap/overview/soft-ui-dashboard" style="color:blue" class="card-title h9 d-block text-darker">
-                    View Docs
-                  </a>
+                <h3 style="
+                    font-family: 'Product Sans';
+                    font-size: 30px;
+                    color: black;
+                ">an application to fetch your NFT's in your Ethereum wallet</h3>
+                <br>
+                <button onclick="location.href='https://github.com/adgsenpai/NFTWalletScanner'"
+                    class="btn btn-icon btn-3 btn-grey" type="button">
+                    <span class="btn-inner--icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg></span>
+                    <span class="btn-inner--text">VIEW GITHUB REPO</span>
+
+                    <button onclick="location.href='/graphql'" class="btn btn-icon btn-3 btn-grey" type="button">
+                        <span class="btn-inner--icon">
+                            <img style="width:15px"
+                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/GraphQL_Logo.svg/240px-GraphQL_Logo.svg.png">
+                        </span>
+                        <span class="btn-inner--text">RUN GRAPHQL</span>
+                    </button>
+            </div>
+
+
+        </div>
+        <br>
+        <div class="card">
+
+            <div class="form-group">
+                <label for="lblBlockChainAddress" style="
+                font-family: 'Product Sans';
+                font-size: 20px;
+                color: black;">To get started enter your Ethereum Wallet Address here</label>
+                <br>
+                <br>
+                <input class="form-control" type="url" style="
+                font-family: 'Product Sans';
+                font-size: 17px;
+                color: blue;" value="" id="edtBlockchainAddress">
+                <br>
+                <button onclick="viewNFT()" type="button" style="font-family: 'Product Sans'" class="btn bg-gradient-info">VIEW
+                    NFTS</button>
             </div>
         </div>
     </div>
 
-    </div>
-    <!-- partial -->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/html5media/1.1.8/html5media.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/plyr/3.6.8/plyr.min.js'></script>
+    <footer class="page-footer font-small special-color-dark pt-4">
 
+        <div style="
+        font-family: 'Product Sans';
+        font-size: 20px;
+        color: black;" class="footer-copyright text-center py-3">
+            a web 3.0 app made with ❤️ by
+            <a style="color:blue" href="https://adgstudios.co.za/"> ADGSTUDIOS</a>
+        </div>
+
+
+    </footer>
 </body>
 
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/html5media/1.1.8/html5media.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/plyr/3.6.8/plyr.min.js'></script>
+
+
+
+
 <script>
+    function viewNFT(){
+        var blockchainaddress = document.getElementById('edtBlockchainAddress').value;
+        location.href = "/viewnfts/"+blockchainaddress;
+    }
+    
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
         var options = {
@@ -64,7 +122,7 @@
         Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
 </script>
-<!-- Github buttons -->
+
 <script async defer src="https://buttons.github.io/buttons.js "></script>
 <script src="./static/js/soft-ui-dashboard.min.js?v=1.0.3 "></script>
 </body>

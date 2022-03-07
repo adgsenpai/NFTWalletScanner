@@ -19,9 +19,8 @@ def get_address(address):
     alltransactions = x.json().get("result")
     contracts = []
     ids = []
-    print("all", address, alltransactions)
+    #print("all", address, alltransactions)
     for t in alltransactions:
-
         if t.get("to") == address:
             # print(t)
             contract_address = t.get("contractAddress")
@@ -29,13 +28,13 @@ def get_address(address):
             # print(contract_address, token_id)
             contracts.append(contract_address)
             ids.append(int(token_id))
-    return x
+
+    df = pd.DataFrame(list(zip(ids, contracts)),
+               columns =['tokenID', 'ContractAddress'])
+    return df
 
 # helper for get_random_address
-
-
 def fetch_random():
-
     df = pd.read_csv('data.csv')
     df = df.values.tolist()
     row = df[randrange(len(df))]
@@ -43,9 +42,7 @@ def fetch_random():
     address = row[1]
     print("1", address, len(address), owner)
     return address, owner
-
 # fetches a random address from file of known addresses
-
 
 def get_random_address():
     address, owner = fetch_random()
@@ -61,7 +58,6 @@ def get_random_address():
     ids = []
     for t in alltransactions:
         if t.get("to") == address:
-            # print(t)
             contract_address = t.get("contractAddress")
             token_id = t.get("tokenID")
             # print(contract_address, token_id)
@@ -69,13 +65,11 @@ def get_random_address():
             ids.append(int(token_id))
     return contracts, ids, address, owner
 
-
 class NFTS(ObjectType):
     uri = List(JSONString)
     address = String()
     images = List(String)
     name = String()
-
 
 class Nulltype(ObjectType):
     result = Boolean()

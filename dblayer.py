@@ -2,25 +2,25 @@ import traceback
 from pymongo import MongoClient
 from PIL import Image
 import requests
-from urllib.request import Request, urlopen  # Python 3
+from urllib.request import Request, urlopen
 from web3 import Web3
 
 from multiprocessing.dummy import Pool as ThreadPool
+
 
 def get_uri(contract_address, token_id, owner_address, land=True):
     import warnings
 
     warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-
-
     image_links = []
     total_uri = []
     inputarray = []
     for i in range(0, len(contract_address)):
-        inputarray.append([contract_address[i], int(token_id[i]), owner_address, land])
+        inputarray.append([contract_address[i], int(
+            token_id[i]), owner_address, land])
     pool = ThreadPool(len(contract_address))
- 
+
     results = pool.map(threadfetch, inputarray)
     for r in results:
         if r != None:
@@ -28,12 +28,14 @@ def get_uri(contract_address, token_id, owner_address, land=True):
             image_links.append(r[1])
     return total_uri, image_links
 
+
 def threadfetch(inp):
     ca = inp[0]
     ti = int(inp[1])
     owner_address = inp[2]
     land = inp[3]
-    w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/v3/bfa70a4ec6eb4a69bdd3866b685abfeb"))
+    w3 = Web3(Web3.HTTPProvider(
+        "https://mainnet.infura.io/v3/bfa70a4ec6eb4a69bdd3866b685abfeb"))
     simplified_abi = [
         {
             'inputs': [{'internalType': 'address', 'name': 'owner', 'type': 'address'}],
@@ -82,7 +84,8 @@ def threadfetch(inp):
     uri = "1"
     try:
 
-        ck_contract = w3.eth.contract(address=w3.toChecksumAddress(ca), abi=simplified_abi)
+        ck_contract = w3.eth.contract(
+            address=w3.toChecksumAddress(ca), abi=simplified_abi)
 
         try:
             symbol = ck_contract.functions.symbol().call()
@@ -177,9 +180,11 @@ def threadfetch(inp):
         traceback.print_exc()
         # pass
 
+
 def create_object(client, object_name, collection_name, info, key):
     db = client[object_name]
-    db[collection_name].update(key ,info, upsert=True)
+    db[collection_name].update(key, info, upsert=True)
+
 
 def insert_object(client, object_name, collection_name, info,):
     db = client[object_name]
@@ -190,22 +195,29 @@ def delete_collection(client, object_name, collection_name):
     db = client[object_name]
     db[collection_name].delete_many()
 
+
 def update_object(client, object_name, collection_name, id, update_dict):
     db = client[object_name]
-    db[collection_name].update({"_id":id},{"$set":update_dict})
+    db[collection_name].update({"_id": id}, {"$set": update_dict})
 
-def find_one( collection, table,  address, token_id):
+
+def find_one(collection, table,  address, token_id):
     db = client[collection]
-    object = db[table].find_one({"address": address, "token_id": str(token_id)})
+    object = db[table].find_one(
+        {"address": address, "token_id": str(token_id)})
     print(object)
     return object
+
+
 def find_nft(address, token_id):
     collection = 'NFTGallery'
     table = 'nft'
     db = client[collection]
-    object = db[table].find_one({"address": address, "token_id": str(token_id)})
+    object = db[table].find_one(
+        {"address": address, "token_id": str(token_id)})
     print("--", address, token_id, bool(object))
     return object
+
 
 def find_user(address):
     collection = 'NFTGallery'
@@ -216,6 +228,8 @@ def find_user(address):
     return object
 
 # GET user
+
+
 def get_user_gallery(user_address):
     gallery = find_user(user_address).get('gallery')
     uriarray = []
@@ -234,11 +248,16 @@ def get_user_gallery(user_address):
     return uriarray, imagearray
 
 # helper
+
+
 def format_nft(nft):
-    nft = [nft.get("uri"), [nft.get('image'), nft.get("uri").get('height'), nft.get("uri").get('width')]]
+    nft = [nft.get("uri"), [nft.get('image'), nft.get(
+        "uri").get('height'), nft.get("uri").get('width')]]
     return nft
 
 # GET global
+
+
 def get_global_gallery():
     collection = 'NFTGallery'
     table = 'globalgallery'
@@ -260,6 +279,8 @@ def get_global_gallery():
     return uriarray, imagearray
 
 # POST global
+
+
 def create_nft(address, token_id):
 
     inp = threadfetch([address, token_id, "", False])
@@ -272,43 +293,57 @@ def create_nft(address, token_id):
     contract_address = inp[0].get('contract_address')
     token_id = inp[0].get("token_id")
     # print(image, contract_address, token_id)
-    nftinput = {'uri': uri, 'image': image, 'token_id':str(token_id), 'address': address,"points": points }
-    galleryinput = {'token_id': token_id, 'address': address, "ranking_points": ranking_points}
+    nftinput = {'uri': uri, 'image': image, 'token_id': str(
+        token_id), 'address': address, "points": points}
+    galleryinput = {'token_id': token_id,
+                    'address': address, "ranking_points": ranking_points}
 
     collection = 'NFTGallery'
     table = 'nft'
     db = client[collection]
     # db[table].insert_one( nftinput)
-    db[table].update_one({"address": address, "token_id": str(token_id)}, {"$set": nftinput}, upsert=True)
+    db[table].update_one({"address": address, "token_id": str(token_id)}, {
+                         "$set": nftinput}, upsert=True)
 
     collection = 'NFTGallery'
     table = 'globalgallery'
     db = client[collection]
-    db[table].update_one({"address": address, "token_id": str(token_id)}, {"$set": galleryinput}, upsert=True)
+    db[table].update_one({"address": address, "token_id": str(token_id)}, {
+                         "$set": galleryinput}, upsert=True)
 
 # POST user
+
+
 def add_to_gallery(user, address, token_id):
     collection = 'NFTGallery'
     table = 'users'
     db = client[collection]
-    db[table].update_one({"address": user}, {"$push": {'gallery': {'address':address, 'token_id':str(token_id)}}}, upsert=True)
+    db[table].update_one({"address": user}, {"$push": {'gallery': {
+                         'address': address, 'token_id': str(token_id)}}}, upsert=True)
     table = 'latest'
-    inlatest = db[table].find_one({"address": address, "token_id":str(token_id)})
+    inlatest = db[table].find_one(
+        {"address": address, "token_id": str(token_id)})
     print(">>-", address, token_id, inlatest)
     if inlatest:
         table = 'nft'
         nftinput = {'uri': inlatest["uri"], 'image': inlatest["image"], 'token_id': inlatest["token_id"],
                     'address': inlatest["address"], "points": inlatest["points"]}
-        db[table].update_one({"address": address, "token_id": str(token_id)}, {"$set": nftinput}, upsert=True)
+        db[table].update_one({"address": address, "token_id": str(token_id)}, {
+                             "$set": nftinput}, upsert=True)
 
 # DELETE user
+
+
 def remove_from_gallery(user, address, token_id):
     collection = 'NFTGallery'
     table = 'users'
     db = client[collection]
-    db[table].update_one({"address": user}, {"$pull": {'gallery': {'address':address, 'token_id':str(token_id)}}})
+    db[table].update_one({"address": user}, {"$pull": {'gallery': {
+                         'address': address, 'token_id': str(token_id)}}})
 
 # retrieve contents of latest gallery
+
+
 def get_latest_gallery():
     collection = 'NFTGallery'
     table = 'latest'
@@ -328,10 +363,13 @@ def get_latest_gallery():
     return uriarray, imagearray
 
 # helper to get latest NFT from opensea
+
+
 def get_latest_opensea(marker=0):
     contracts = []
     tokenids = []
-    api_url = "https://api.opensea.io/api/v1/events?only_opensea=false&offset=" + str(marker) +"&limit=2000"
+    api_url = "https://api.opensea.io/api/v1/events?only_opensea=false&offset=" + \
+        str(marker) + "&limit=2000"
     x = requests.get(api_url)
     jsun = x.json()
     try:
@@ -371,7 +409,6 @@ def job_function():
             results_contracts.append(uri[i])
             results_tokens.append(image_links[i])
 
-
         marker = marker + 2000
 
     # put into database
@@ -382,7 +419,8 @@ def job_function():
         token_id = rc.get("token_id")
         address = rc.get("address")
         points = 0
-        nftinput = {'uri': rc, 'image': image, 'token_id': token_id, 'address': address, "points": points}
+        nftinput = {'uri': rc, 'image': image, 'token_id': token_id,
+                    'address': address, "points": points}
         insert_input.append(nftinput)
     if len(insert_input) > 0:
         db[table].delete_many({})
@@ -390,6 +428,7 @@ def job_function():
     else:
         print("none")
     print("going at it")
+
 
 if __name__ == "__main__":
     # r = threadfetch(["0x50f5474724e0ee42d9a4e711ccfb275809fd6d4a", 100151,"", False])
